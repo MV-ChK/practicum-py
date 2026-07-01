@@ -1,35 +1,58 @@
-class Product:
+# Импортируйте нужную библиотеку.
+from datetime import datetime
 
-    def __init__(self, name, cnt):
-        self.name = name
-        self.count = cnt
+class Store:
+    def __init__(self, address):
+        self.address = address
 
-    def get_info(self):
-        return f"{self.name} (в наличии: {self.count})"
+    def is_open(self, date):
+        return False
 
-
-class Kettlebell(Product):
-
-    def __init__(self, name, cnt, weight):
-        super().__init__(name, cnt)
-        self.weight = weight
-
-    def get_weight(self):
-        return self.get_info() + f". Вес: {self.weight} кг"
-
-
-class Clothing(Product):
-
-    def __init__(self, name, cnt, size):
-        super().__init__(name, cnt)
-        self.size = size
-
-    def get_size(self):
-        return self.get_info() + f". Размер: {self.size}"
+    def get_info(self, date_str):
+        # С помощью шаблона даты преобразуйте строку date_str в объект даты:
+        date_object = datetime.strptime(date_str, '%d.%m.%Y').date()
+        
+        # Передайте в метод is_open() объект даты date_object и определите,
+        # работает ли магазин в указанную дату. 
+        # В зависимости от результата будет выбрано значение
+        # для переменной info.
+        if self.is_open(date_object):
+            info = 'работает'
+        else:
+            info = 'не работает'
+        return f'Магазин по адресу {self.address} {date_str} {info}'
 
 
-small_kettlebell = Kettlebell('Гиря малая', 15, 2)
-shirt = Clothing('Футболка', 5, 'L')
+class MiniStore(Store):
+    # Переопределите метод is_open().
+    def is_open(self, date):
+        if date.weekday() <= 4:
+            return True
+        else: 
+            return False
 
-print(small_kettlebell.get_weight())
-print(shirt.get_size())
+class WeekendStore(Store):
+    # Переопределите метод is_open().
+    def is_open(self, date):
+        if date.weekday() >= 5:
+            return True
+        else: 
+            return False
+
+
+class NonStopStore(Store):
+    def is_open(self, date):
+        return True
+
+
+mini_store = MiniStore('Улица Немига, 57')
+print(mini_store.get_info('29.03.2024'))
+print(mini_store.get_info('30.03.2024'))
+
+weekend_store = WeekendStore('Улица Толе би, 321')
+print(weekend_store.get_info('29.03.2024'))
+print(weekend_store.get_info('30.03.2024'))
+
+non_stop_store = NonStopStore('Улица Арбат, 60')
+print(non_stop_store.get_info('29.03.2024'))
+print(non_stop_store.get_info('30.03.2024'))
