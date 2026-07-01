@@ -4,6 +4,9 @@ class Phone:
 
     def __init__(self, dial_type_value):
         self.dial_type = dial_type_value
+        # Вот он - защищённый атрибут. Значением будет
+        # ID ячейки памяти аргумента dial_type_value.
+        self._serial_number = id(dial_type_value)
 
     def ring(self):
         print('Дзззззыыыыыыыынь!')
@@ -13,8 +16,8 @@ class Phone:
 
 
 class MobilePhone(Phone):
-    line_type = "беспроводной"
-    battery_type = "Li-ion"
+    line_type = 'беспроводной'
+    battery_type = 'Li-ion'
 
     def __init__(self, dial_type_value, network_type):
         self.network_type = network_type
@@ -23,17 +26,13 @@ class MobilePhone(Phone):
     def ring(self):
         print('Дзынь-дзынь!')
 
-    def start_game(self):
-        print("Игра запущена!")
+    # Это публичный метод, в котором используется защищённый атрибут.
+    # Метод определён в классе-наследнике, защищённые атрибуты можно
+    # использовать напрямую в базовом классе и его наследниках.
+    def get_info(self):
+        print(f'Серийный №: {self._serial_number}, тип: {self.network_type}')
+        
+        
+my_phone = MobilePhone("сенсорный", "LTE")
 
-
-mobile_phone = MobilePhone('сенсорный', 'LTE')
-
-rotary_phone = Phone("проводной")
-
-print(mobile_phone.battery_type)
-print(mobile_phone.network_type)
-
-mobile_phone.call(880055553535)
-
-mobile_phone.start_game()
+print(my_phone._serial_number)
