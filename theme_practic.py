@@ -1,58 +1,24 @@
-# Импортируйте нужную библиотеку.
-from datetime import datetime
+from decimal import Decimal
 
-class Store:
-    def __init__(self, address):
-        self.address = address
+class Customer:
+    def __init__(self, name, discount=10):
+        self.name = name
 
-    def is_open(self, date):
-        return False
+    __discount = 10
+        # Добавьте сюда атрибут "скидка" со значением по умолчанию 10.
+    def get_price(self, price):
+        return round((price - ( (price / 100) * self.__discount) ), 2)
 
-    def get_info(self, date_str):
-        # С помощью шаблона даты преобразуйте строку date_str в объект даты:
-        date_object = datetime.strptime(date_str, '%d.%m.%Y').date()
-        
-        # Передайте в метод is_open() объект даты date_object и определите,
-        # работает ли магазин в указанную дату. 
-        # В зависимости от результата будет выбрано значение
-        # для переменной info.
-        if self.is_open(date_object):
-            info = 'работает'
-        else:
-            info = 'не работает'
-        return f'Магазин по адресу {self.address} {date_str} {info}'
+    # Реализуйте методы get_price() и set_discount().
+
+    def set_discount(self, new_discount):
+        if (new_discount <= 80) and (new_discount > 0):
+            self.__discount = new_discount
+        if new_discount > 80:
+            self.__discount = 80
 
 
-class MiniStore(Store):
-    # Переопределите метод is_open().
-    def is_open(self, date):
-        if date.weekday() <= 4:
-            return True
-        else: 
-            return False
-
-class WeekendStore(Store):
-    # Переопределите метод is_open().
-    def is_open(self, date):
-        if date.weekday() >= 5:
-            return True
-        else: 
-            return False
-
-
-class NonStopStore(Store):
-    def is_open(self, date):
-        return True
-
-
-mini_store = MiniStore('Улица Немига, 57')
-print(mini_store.get_info('29.03.2024'))
-print(mini_store.get_info('30.03.2024'))
-
-weekend_store = WeekendStore('Улица Толе би, 321')
-print(weekend_store.get_info('29.03.2024'))
-print(weekend_store.get_info('30.03.2024'))
-
-non_stop_store = NonStopStore('Улица Арбат, 60')
-print(non_stop_store.get_info('29.03.2024'))
-print(non_stop_store.get_info('30.03.2024'))
+customer = Customer("Иван Иванович")
+print(customer.get_price(100))
+customer.set_discount(19)
+print(customer.get_price(1114))
