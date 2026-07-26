@@ -1,34 +1,34 @@
-class Product:
-    def __init__(self, name, retail_price, purchase_price):
-        self.name = name 
-        self.retail_price = retail_price
-        self.purchase_price = purchase_price
+# Числа Фибоначчи — это последовательность чисел, где первые два числа — это 0 и 1,
+# а каждое последующее число вычисляется как сумма двух предыдущих. 
+# Например, вот первые шесть чисел последовательности Фибоначчи:
+# 0, 1, 1, 2, 3, 5 
+# Напишите функцию-генератор fibonacci(n), которая вычисляет элементы последовательности Фибоначчи до n-ого числа.
 
 
-    @property
-    def profit(self):
-        return self.retail_price - self.purchase_price
-    
-    @staticmethod 
-    def average_price(price_list):
-        return sum(price_list) // len(price_list)
-    
-    @property
-    def information(self):
-        return f'Товар: {self.name}, розничная цена: {self.retail_price}, закупочная цена: {self.purchase_price}'
-    
-    
-    
-product_1 = Product('Картошка', 100, 90)
-product_2 = Product('Перчатки', 150, 120)
-product_3 = Product('Велосипед', 170, 150)
 
-assortment_prices = [
-    product_1.retail_price, 
-    product_2.retail_price, 
-    product_3.retail_price
-]
+def fibonacci(n):
+    
+    # a = 0
+    # b = 1
+    # for i in range(n):
+    #     yield a
+    #     current = a
+    #     a = b
+    #     b = current + b
 
-print(f'Средняя стоимость: {Product.average_price(assortment_prices)}')
-print(f'Прибыль магазина с товара {product_1.name}: {product_1.profit}')
-print(f'Информация о товаре {product_1.name}: {product_1.information}')
+    fib_list = [0, 1]
+    c = 0
+    while c < n:
+        
+        if len(fib_list) == 2:
+            yield 0; c += 1
+            yield 1; c += 1
+            
+        temp_x = fib_list[-1] + fib_list[-2]
+        fib_list.append(temp_x)
+        yield temp_x; c += 1
+
+
+sequence = fibonacci(12)
+for number in sequence:
+    print(number)
